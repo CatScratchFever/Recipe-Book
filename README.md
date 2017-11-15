@@ -4,3 +4,5 @@
 #### Place all files into a directory (C:/Python/RecipeBook or /home/pi/RecipeBook, etc.) #### 
 
 Add more recipes into the Recipes folder and appropriate sub-directory, write your own recipe text file!
+
+(This is my first serious computer app, many issues probably!)
