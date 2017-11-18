@@ -12,6 +12,6 @@ v0.3
 [Python]A digital recipe book to be used on a raspberry pi and 7" touchscreen. Makes use of tkinter and Pillow for the GUI.
 Place all files into a directory (C:/Python/RecipeBook or /home/pi/RecipeBook, etc.)
 
-Add more recipes into a Recipes folder and appropriate sub-directory(Breakfast, Lunch, etc.), write your own recipe text file!
+Add more recipes into a Recipes folder(included examples in the rar) and appropriate sub-directory(Breakfast, Lunch, etc.), write your own recipe text file!  
 
 (This is my first serious computer app, many issues probably!)
