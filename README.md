@@ -1,6 +1,6 @@
 v0.3
 
-#########################CHANGELOG#########################
+-------------------------CHANGELOG-------------------------
 v0.1
 -First functional build with all of the main ideas and functionality built in.
 v0.2
