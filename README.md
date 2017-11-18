@@ -1,7 +1,7 @@
 v0.3
 
--------------------------CHANGELOG-------------------------
-v0.1
+------------------------CHANGELOG------------------------
+v0.1 
 -First functional build with all of the main ideas and functionality built in.
 v0.2
 -Added barebones option menu! Can now set color of the toolbar and main background.
