@@ -3,10 +3,22 @@
 # pi and touchscreen in the kitchen!
 
 #Author - Sean Wiley
+#v0.3
+
+########################### TODO ##########################
+# Apply MVC techniques to my code to clean it up
+
+
+
+###########################################################
 
 from tkinter import *
 from tkinter import ttk
+
 from tkinter.colorchooser import *
+import configparser
+from math import *
+
 from PIL import Image
 from PIL import ImageTk
 import os
@@ -47,6 +59,7 @@ import sys
 # V. A text box will contain the recipe itself, along with ingredients
 #   - If space allows, ingredients in a seperate text box.
 
+
 class RecipeBook:
 
     TITLE_TEXT_SIZE = "32"
@@ -57,17 +70,135 @@ class RecipeBook:
     LISTBOX_FONT = "Arial"
     LISTBOX_TYPE = "bold"
 
-    menu_background_color = 'ghost white'
-    recipe_frame_background_color = 'plum1'
+    A = '#ff00ff' #default
+    B = '#ff00ff' #default
+    C = '#000000' #default
+    
+    Config = configparser.ConfigParser()
+    Config.read('.\\config.ini')
+    print(Config.sections())
+    A = Config['colors'].get('Menu_Background_Color')
+    B = Config['colors'].get('Recipe_Frame_Background_Color')
+    C = Config['colors'].get('Main_Title_Color')
+    
+    menu_Background_Color = A
+    recipe_Frame_Background_Color = B
+    main_title_Color = C
 
     type_of_food = "Breakfast"
     
     @staticmethod
     def quit_app(event=None):
         root.destroy()
+        
+    def getColor(self, window, frame,event=None):
+        color = askcolor()
+        f = open('config.ini','w')
+        if color[1] == None:
+            self.Config.write(f)
+            '''f.write('Menu_Background_Color= ' + self.menu_Background_Color + '\n')
+            f.write('Recipe_Frame_Background_Color= ' + self.recipe_Frame_Background_Color)'''
+        else:
+            # ---- Luminosity Formula for converting Main Menu Title ----
+            R1 = color[0][0]/255
+            G1 = color[0][1]/255
+            B1 = color[0][2]/255
+            RGB = [R1, G1, B1]
+            Cmax = max(RGB)
+            Cmin = min(RGB)
+            L = (Cmax + Cmin) / 2
+            print(L)
+            
+            if frame == 'menu':
+                self.Config.set('colors', 'Menu_Background_Color',str(color[1]))
+                self.menu_Background_Color = str(color[1])
+                self.update_color('menu', self.recipe_toolbar, self.bg_color_button)
+                
+            elif frame == 'recipe':
+                self.Config.set('colors', 'Recipe_Frame_Background_Color',str(color[1]))
+                self.recipe_Frame_Background_Color = str(color[1])
+                self.update_color('recipe', self.recipe_window,
+                                  self.recipe_color_button,
+                                  self.main_title_label)
+                if L <= .30:
+                    Lcolor = '#ffffff'
+                else:
+                    Lcolor = '#000000'
+                self.Config.set('colors', 'Main_Title_Color',Lcolor)
+                self.main_title_label.config(fg = Lcolor)
+                self.main_title_label.update()
+        self.Config.write(f)
+        f.close()
+            
+        window.lift()
+        print (color)
 
-    def options_menu(event=None):
+    def update_color(self, frame, *args, event=None):
+        if frame == 'menu':
+            for widget in args:
+                widget.config(bg=self.menu_Background_Color)
+                widget.update()
+        elif frame == 'recipe':
+            for widget in args:
+                widget.config(bg=self.recipe_Frame_Background_Color)
+                widget.update()
+
+    def options_menu(self, event=None):
+        self.options_button['state'] = 'disabled'
+        self.top = Toplevel()
+        self.top.overrideredirect(1)
+        self.top.title("Options")
+        self.top.geometry("+10+10")
+
+        frame = Frame(self.top, bd=5, bg='black')
+        frame.pack()
+        header_frame = Frame(frame, bg="white")
+        header_frame.pack(side=TOP, fill=X)
+        header = Label(header_frame, text="Options")
+        header.config(font=("Arial", "32", "bold"),bg="white")
+        header.pack(side=TOP)
+
+        options_frame = Frame(frame, pady=5,padx=5, bg="white")
+        options_frame.pack(fill=BOTH)
+        bg_color_label = Label(options_frame, text="Toolbar Color",
+                               font=("Arial", "12", "bold"),
+                               bg="white",
+                               pady=5)
+        bg_color_label.grid(row=0, column=0, sticky=W)
+    
+        self.bg_color_button = Button(options_frame,
+                                 bg=self.menu_Background_Color,
+                                 width=10,
+                                 command=lambda: self.getColor(self.top,'menu'))
+        self.bg_color_button.grid(row=0, column=1, sticky=W+E)
+
+        recipe_color_label = Label(options_frame, text="Background Color",
+                               font=("Arial", "12", "bold"),
+                               bg="white",
+                               pady=5)
+        recipe_color_label.grid(row=1, column=0, sticky=W)
+        
+
+        self.recipe_color_button = Button(options_frame,
+                                 bg=self.recipe_Frame_Background_Color,
+                                 width=10,
+                                 command=lambda: self.getColor(self.top,'recipe'))
+        self.recipe_color_button.grid(row=1, column=1, sticky=W+E)
+
+        options_close_button = Button(options_frame,
+                                      width=10,
+                                      text="Close",
+                                      font="bold",
+                                      padx=5,
+                                      command=lambda: self.close_option_menu())
+        options_close_button.grid(row=2, column=2, sticky=SW)
+        
         print("Options menu opened!")
+
+    def close_option_menu(self, event=None):
+        self.options_button['state'] = 'active'
+        self.top.destroy()
+        
 
     def change_type(self, food_type, event=None):
         self.type_of_food = food_type
@@ -110,11 +241,14 @@ class RecipeBook:
     def __init__(self, root):
         # -------- Root Management -------
         root.title("Recipe Book")
+        X_WIDTH = root.winfo_screenwidth()
+        Y_HEIGHT = root.winfo_screenwidth()
         root.geometry(str(X_WIDTH) + "x" + str(Y_HEIGHT))
+        root.wm_attributes('-fullscreen','true')
         
         # ------ Recipe Type List Toolbar --------
         self.recipe_toolbar = Frame(root, bd=2, relief=RAISED)
-        self.recipe_toolbar.config(bg=self.menu_background_color)
+        self.recipe_toolbar.config(bg=self.menu_Background_Color)
         self.recipe_toolbar.pack(side=TOP, fill=X)
         
         # ----- Breakfast Button-------
@@ -184,14 +318,15 @@ class RecipeBook:
 
         # ------- Main Recipe Window Frame --------
         self.recipe_window = Frame(root)
-        self.recipe_window.config(background=self.recipe_frame_background_color)
+        self.recipe_window.config(background=self.recipe_Frame_Background_Color)
         self.recipe_window.pack(side=TOP, fill=BOTH)
 
         # ------- Main Title ---------
         
         self.main_title = StringVar()
         self.main_title_label = Label(self.recipe_window, textvariable=self.main_title,
-                                      bg=self.recipe_frame_background_color,
+                                      bg=self.recipe_Frame_Background_Color,
+                                      fg=self.main_title_Color,
                                       font=(self.TITLE_FONT, self.TITLE_TEXT_SIZE,self.TITLE_TYPE))
         self.main_title.set("MAIN MENU")
         self.main_title_label.grid(row=0, column=0, padx=2, pady=2, sticky=W)
@@ -210,23 +345,24 @@ class RecipeBook:
         # ----- Recipe Text -------
         
         self.recipe_scrollbar = Scrollbar(self.recipe_window, width=50)
-        self.text_area = Text(self.recipe_window,wrap=WORD,bd=1,
+        self.text_area = Text(self.recipe_window,wrap=WORD,bd=2,
                               yscrollcommand=self.recipe_scrollbar.set,
-                              pady=10,
                               width=40)
         self.text_area.grid(row=1, column=2,sticky=N+S+W)
         self.recipe_scrollbar.config(command=self.text_area.yview)
-        self.recipe_scrollbar.grid(row=1, column=3,sticky=N+S+E, rowspan=2)
+        self.recipe_scrollbar.grid(row=1, column=3,sticky=N+S+E)
                 
         root.bind("<F1>", self.clear_listbox)
         root.bind("<Escape>", self.quit_app)
-   
+        #self.listbox_scrollbar.grid_forget()
+        #self.recipe_scrollbar.grid_forget()
+        
+
 root = Tk()
-X_WIDTH = root.winfo_screenwidth()
-Y_HEIGHT = root.winfo_screenwidth()
-root.wm_attributes('-fullscreen','true')
 book = RecipeBook(root)
 root.mainloop()
+
+
         
 
         
