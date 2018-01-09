@@ -4,27 +4,27 @@ v0.5.1
 
 v0.1
 
--First functional build with all of the main ideas and functionality built in.
+  -First functional build with all of the main ideas and functionality built in.
 
 v0.2
 
--Added barebones option menu! Can now set color of the toolbar and main background!
+  -Added barebones option menu! Can now set color of the toolbar and main background!
 
 v0.3
 
--Added configparser module to track and set color options for the options menu.
+  -Added configparser module to track and set color options for the options menu.
 
 v0.4
 
--Moved main title up into toolbar frame to help with framing issues.
+  -Moved main title up into toolbar frame to help with framing issues.
 
 v.0.5
 
--Completely turned options menu into it's own class.
+  -Completely turned options menu into it's own class.
 
 v0.5.1
 
--Seperated Menu Buttons into their own class.
+  -Seperated Menu Buttons into their own class.
 
 
 [Python]A digital recipe book to be used on a raspberry pi and 7" touchscreen. Makes use of tkinter and Pillow for the GUI.
