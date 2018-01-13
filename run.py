@@ -3,7 +3,7 @@
 used with a raspberry pi and touchscreen in the kitchen!'''
 
 #Author - Sean Wiley
-#v0.5.1
+#v0.2.4
 
 ########################### TODO ##########################
 # Apply MVC techniques to my code to clean it up
