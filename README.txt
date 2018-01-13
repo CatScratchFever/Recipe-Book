@@ -1,4 +1,14 @@
-v0.5.1
+v0.5.2
+
+
+[Python]A digital recipe book to be used on a raspberry pi and 7" touchscreen. Makes use of tkinter and Pillow for the GUI.
+Place all files into a directory (C:/Python/RecipeBook or /home/pi/RecipeBook, etc.)
+
+Add more recipes into the Recipes folder and appropriate sub-directory, write your own recipe text file!
+
+(This is my first serious computer app, many issues probably!)
+
+Run "run.py" to open the program.
 
 ######################### CHANGELOG #########################
 v0.1
@@ -10,14 +20,10 @@ v0.3
 v0.4
 -Moved main title up into toolbar frame to help with framing issues.
 v.0.5
--Completely turned options menu into it's own class.
+-Completely turned options menu into it's own class "OptionMenu"
 v0.5.1
--Seperated Menu Buttons into their own class.
+-Seperated Menu Buttons into their own class "MenuButtons"
+v0.5.2
+-Seperated the interface and interface functions into their own seperate classes "GUI" and "GUI_Control"
+-added a seperate "run.py" script to run code from.
 
-
-[Python]A digital recipe book to be used on a raspberry pi and 7" touchscreen. Makes use of tkinter and Pillow for the GUI.
-Place all files into a directory (C:/Python/RecipeBook or /home/pi/RecipeBook, etc.)
-
-Add more recipes into the Recipes folder and appropriate sub-directory, write your own recipe text file!
-
-(This is my first serious computer app, many issues probably!)
