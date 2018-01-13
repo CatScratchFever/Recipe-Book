@@ -1,6 +1,8 @@
 #!usr/bin/python
 ''' Recipe Book! Python and Tkinter build recipe book to be
-used with a raspberry pi and touchscreen in the kitchen!'''
+used with a raspberry pi and touchscreen in the kitchen!
+
+Activate this script to start the program.'''
 
 #Author - Sean Wiley
 #v0.2.4
@@ -15,7 +17,7 @@ used with a raspberry pi and touchscreen in the kitchen!'''
 from tkinter import *
 from gui import GUI
 
-#ACTIVATE THIS SCRIPT TO START THE PROGRAM
+
 
 if __name__ == "__main__":
     root = Tk()
